@@ -30,7 +30,8 @@ public class Cliente implements Serializable {
 	private String cpfOuCnpj;
 	private Integer tipo;
 
-	// JsonManagedReference permite imprimir o JSON do endereco mas nao permite o endereço imprimir o cliente
+	// JsonManagedReference permite imprimir o JSON do endereco mas nao permite o
+	// endereço imprimir o cliente
 	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	private List<Endereco> enderecos = new ArrayList<Endereco>();
@@ -38,6 +39,10 @@ public class Cliente implements Serializable {
 	@ElementCollection
 	@CollectionTable(name = "TELEFONE")
 	private Set<String> telefones = new HashSet<String>();
+
+	
+	@OneToMany(mappedBy = "cliente") // nome da referencia dessa classe na classe Pedido
+	private List<Pedido> pedidos = new ArrayList<Pedido>();
 
 	public Cliente() {
 	}
@@ -107,10 +112,18 @@ public class Cliente implements Serializable {
 		this.telefones = telefones;
 	}
 
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
+	}
+
 	@Override
 	public String toString() {
 		return "Cliente [id=" + id + ", nome=" + nome + ", email=" + email + ", cpfOuCnpj=" + cpfOuCnpj + ", tipo="
-				+ tipo + "]";
+				+ tipo + ", enderecos=" + enderecos + ", telefones=" + telefones + ", pedidos=" + pedidos + "]";
 	}
 
 	@Override
