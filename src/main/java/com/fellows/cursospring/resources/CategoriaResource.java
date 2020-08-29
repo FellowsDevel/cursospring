@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fellows.cursospring.domain.Categoria;
 import com.fellows.cursospring.services.CategoriaService;
+import com.fellows.cursospring.services.exception.DataIntegrityException;
 import com.fellows.cursospring.services.exception.DataNotFoundException;
 
 @RestController
@@ -39,5 +40,10 @@ public class CategoriaResource {
 	public ResponseEntity<Void> update(@RequestBody Categoria obj, @PathVariable Integer id) throws DataNotFoundException {
 		obj = service.update(obj, id);
 		return ResponseEntity.noContent().build();
+	}
+	
+	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
+	public void delete (@PathVariable Integer id) throws DataIntegrityException {
+		service.delete(id);
 	}
 }
