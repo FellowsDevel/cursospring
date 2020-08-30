@@ -2,12 +2,18 @@ package com.fellows.cursospring.dto;
 
 import java.io.Serializable;
 
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.Size;
+
 import com.fellows.cursospring.domain.Categoria;
 
 public class CategoriaDTO implements Serializable {
 
 	private static final long serialVersionUID = -8365368161711483187L;
 	private Integer id;
+
+	@NotEmpty(message = "O nome da categoria não pode ser vazia!")
+	@Size(min = 5, max = 80, message = "O nome deve ter entre 5 e 80 caracteres")
 	private String nome;
 
 	public CategoriaDTO() {
