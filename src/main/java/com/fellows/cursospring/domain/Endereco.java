@@ -13,31 +13,31 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Endereco implements Serializable {
-	private static final long serialVersionUID = 7727979970456657307L;
+	private static final long	serialVersionUID	= 7727979970456657307L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String logradouro;
-	private String numero;
-	private String complemento;
-	private String bairro;
-	private String cep;
+	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	private Integer				id;
+	private String				logradouro;
+	private String				numero;
+	private String				complemento;
+	private String				bairro;
+	private String				cep;
 
 	@JsonIgnore
 	@ManyToOne
-	@JoinColumn(name = "cliente_id")
-	private Cliente cliente;
-	
+	@JoinColumn( name = "cliente_id" )
+	private Cliente				cliente;
+
 	@ManyToOne
-	@JoinColumn(name = "cidade_id")
-	private Cidade cidade;
+	@JoinColumn( name = "cidade_id" )
+	private Cidade				cidade;
 
 	public Endereco() {
 	}
 
-	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
-			Cliente cliente, Cidade cidade) {
+	public Endereco( Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
+			Cliente cliente, Cidade cidade ) {
 		super();
 		this.id = id;
 		this.logradouro = logradouro;
@@ -53,7 +53,7 @@ public class Endereco implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId( Integer id ) {
 		this.id = id;
 	}
 
@@ -61,7 +61,7 @@ public class Endereco implements Serializable {
 		return logradouro;
 	}
 
-	public void setLogradouro(String logradouro) {
+	public void setLogradouro( String logradouro ) {
 		this.logradouro = logradouro;
 	}
 
@@ -69,7 +69,7 @@ public class Endereco implements Serializable {
 		return numero;
 	}
 
-	public void setNumero(String numero) {
+	public void setNumero( String numero ) {
 		this.numero = numero;
 	}
 
@@ -77,7 +77,7 @@ public class Endereco implements Serializable {
 		return complemento;
 	}
 
-	public void setComplemento(String complemento) {
+	public void setComplemento( String complemento ) {
 		this.complemento = complemento;
 	}
 
@@ -85,7 +85,7 @@ public class Endereco implements Serializable {
 		return bairro;
 	}
 
-	public void setBairro(String bairro) {
+	public void setBairro( String bairro ) {
 		this.bairro = bairro;
 	}
 
@@ -93,7 +93,7 @@ public class Endereco implements Serializable {
 		return cep;
 	}
 
-	public void setCep(String cep) {
+	public void setCep( String cep ) {
 		this.cep = cep;
 	}
 
@@ -101,7 +101,7 @@ public class Endereco implements Serializable {
 		return cliente;
 	}
 
-	public void setCliente(Cliente cliente) {
+	public void setCliente( Cliente cliente ) {
 		this.cliente = cliente;
 	}
 
@@ -109,7 +109,7 @@ public class Endereco implements Serializable {
 		return cidade;
 	}
 
-	public void setCidade(Cidade cidade) {
+	public void setCidade( Cidade cidade ) {
 		this.cidade = cidade;
 	}
 
@@ -122,25 +122,25 @@ public class Endereco implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		final int	prime	= 31;
+		int			result	= 1;
+		result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals( Object obj ) {
+		if ( this == obj )
 			return true;
-		if (obj == null)
+		if ( obj == null )
 			return false;
-		if (getClass() != obj.getClass())
+		if ( getClass() != obj.getClass() )
 			return false;
 		Endereco other = (Endereco) obj;
-		if (id == null) {
-			if (other.id != null)
+		if ( id == null ) {
+			if ( other.id != null )
 				return false;
-		} else if (!id.equals(other.id))
+		} else if ( !id.equals( other.id ) )
 			return false;
 		return true;
 	}

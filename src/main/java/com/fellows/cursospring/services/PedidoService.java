@@ -17,27 +17,27 @@ public class PedidoService {
 	@Autowired
 	private PedidoRepository repo;
 
-	public Pedido find(Integer id) throws DataNotFoundException {
-		Optional<Pedido> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new DataNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName()));
-	}
-	
-	public Pedido insert(Pedido obj) {
-		obj.setId(null);
-		return repo.save(obj);
+	public Pedido find( Integer id ) throws DataNotFoundException {
+		Optional<Pedido> obj = repo.findById( id );
+		return obj.orElseThrow( () -> new DataNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName() ) );
 	}
 
-	public Pedido update(Pedido obj, Integer id) throws DataNotFoundException {
-		find(id);
-		return repo.save(obj);
+	public Pedido insert( Pedido obj ) {
+		obj.setId( null );
+		return repo.save( obj );
 	}
 
-	public void delete(Integer id) throws DataIntegrityException {
+	public Pedido update( Pedido obj, Integer id ) throws DataNotFoundException {
+		find( id );
+		return repo.save( obj );
+	}
+
+	public void delete( Integer id ) throws DataIntegrityException {
 		try {
-			repo.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException(e.getMessage());
+			repo.deleteById( id );
+		} catch ( DataIntegrityViolationException e ) {
+			throw new DataIntegrityException( e.getMessage() );
 		}
 	}
 }

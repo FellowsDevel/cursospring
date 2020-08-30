@@ -15,21 +15,21 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 @Entity
 public class Estado implements Serializable {
 
-	private static final long serialVersionUID = 9001198523427606436L;
+	private static final long	serialVersionUID	= 9001198523427606436L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	private String nome;
+	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	private Integer				id;
+	private String				nome;
 
 	@JsonIgnore
-	@OneToMany(mappedBy = "estado")
-	private List<Cidade> cidades = new ArrayList<Cidade>();
+	@OneToMany( mappedBy = "estado" )
+	private List<Cidade>		cidades				= new ArrayList<Cidade>();
 
 	public Estado() {
 	}
 
-	public Estado(Integer id, String nome) {
+	public Estado( Integer id, String nome ) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -39,7 +39,7 @@ public class Estado implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId( Integer id ) {
 		this.id = id;
 	}
 
@@ -47,7 +47,7 @@ public class Estado implements Serializable {
 		return nome;
 	}
 
-	public void setNome(String nome) {
+	public void setNome( String nome ) {
 		this.nome = nome;
 	}
 
@@ -55,7 +55,7 @@ public class Estado implements Serializable {
 		return cidades;
 	}
 
-	public void setCidades(List<Cidade> cidades) {
+	public void setCidades( List<Cidade> cidades ) {
 		this.cidades = cidades;
 	}
 
@@ -66,25 +66,25 @@ public class Estado implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		final int	prime	= 31;
+		int			result	= 1;
+		result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals( Object obj ) {
+		if ( this == obj )
 			return true;
-		if (obj == null)
+		if ( obj == null )
 			return false;
-		if (getClass() != obj.getClass())
+		if ( getClass() != obj.getClass() )
 			return false;
 		Estado other = (Estado) obj;
-		if (id == null) {
-			if (other.id != null)
+		if ( id == null ) {
+			if ( other.id != null )
 				return false;
-		} else if (!id.equals(other.id))
+		} else if ( !id.equals( other.id ) )
 			return false;
 		return true;
 	}

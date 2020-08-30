@@ -22,27 +22,27 @@ public class CategoriaService {
 	@Autowired
 	private CategoriaRepository repo;
 
-	public Categoria find(Integer id) throws DataNotFoundException {
-		Optional<Categoria> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new DataNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName()));
+	public Categoria find( Integer id ) throws DataNotFoundException {
+		Optional<Categoria> obj = repo.findById( id );
+		return obj.orElseThrow( () -> new DataNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName() ) );
 	}
 
-	public Categoria insert(Categoria obj) {
-		obj.setId(null);
-		return repo.save(obj);
+	public Categoria insert( Categoria obj ) {
+		obj.setId( null );
+		return repo.save( obj );
 	}
 
-	public Categoria update(Categoria obj, Integer id) throws DataNotFoundException {
-		find(id);
-		return repo.save(obj);
+	public Categoria update( Categoria obj, Integer id ) throws DataNotFoundException {
+		find( id );
+		return repo.save( obj );
 	}
 
-	public void delete(Integer id) throws DataIntegrityException {
+	public void delete( Integer id ) throws DataIntegrityException {
 		try {
-			repo.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException("Não é possível excluir uma categoria com produtos associados");
+			repo.deleteById( id );
+		} catch ( DataIntegrityViolationException e ) {
+			throw new DataIntegrityException( "Não é possível excluir uma categoria com produtos associados" );
 		}
 	}
 
@@ -50,13 +50,13 @@ public class CategoriaService {
 		return repo.findAll();
 	}
 
-	public Page<Categoria> paginate(Integer page, Integer size, String orderBy, String direction) {
-		PageRequest pr = PageRequest.of(page, size, Direction.valueOf(direction), orderBy);
-		return repo.findAll(pr);
+	public Page<Categoria> paginate( Integer page, Integer size, String orderBy, String direction ) {
+		PageRequest pr = PageRequest.of( page, size, Direction.valueOf( direction ), orderBy );
+		return repo.findAll( pr );
 	}
 
-	public Categoria fromDTO(CategoriaDTO objDTO) {
-		return new Categoria(objDTO.getId(), objDTO.getNome());
+	public Categoria fromDTO( CategoriaDTO objDTO ) {
+		return new Categoria( objDTO.getId(), objDTO.getNome() );
 	}
 
 }

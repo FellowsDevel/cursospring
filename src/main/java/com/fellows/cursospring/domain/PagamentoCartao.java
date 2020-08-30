@@ -7,15 +7,15 @@ import com.fellows.cursospring.domain.enums.EstadoPagamento;
 @Entity
 public class PagamentoCartao extends Pagamento {
 
-	private static final long serialVersionUID = -254684891976590123L;
+	private static final long	serialVersionUID	= -254684891976590123L;
 
-	private Integer parcelas;
+	private Integer				parcelas;
 
 	public PagamentoCartao() {
 	}
 
-	public PagamentoCartao(Integer id, EstadoPagamento estadoPagamento, Pedido pedido, Integer parcelas) {
-		super(id, estadoPagamento, pedido);
+	public PagamentoCartao( Integer id, EstadoPagamento estadoPagamento, Pedido pedido, Integer parcelas ) {
+		super( id, estadoPagamento, pedido );
 		this.parcelas = parcelas;
 	}
 
@@ -23,7 +23,7 @@ public class PagamentoCartao extends Pagamento {
 		return parcelas;
 	}
 
-	public void setParcelas(Integer parcelas) {
+	public void setParcelas( Integer parcelas ) {
 		this.parcelas = parcelas;
 	}
 
@@ -34,25 +34,25 @@ public class PagamentoCartao extends Pagamento {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = super.hashCode();
-		result = prime * result + ((parcelas == null) ? 0 : parcelas.hashCode());
+		final int	prime	= 31;
+		int			result	= super.hashCode();
+		result = prime * result + ( ( parcelas == null ) ? 0 : parcelas.hashCode() );
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals( Object obj ) {
+		if ( this == obj )
 			return true;
-		if (!super.equals(obj))
+		if ( !super.equals( obj ) )
 			return false;
-		if (getClass() != obj.getClass())
+		if ( getClass() != obj.getClass() )
 			return false;
 		PagamentoCartao other = (PagamentoCartao) obj;
-		if (parcelas == null) {
-			if (other.parcelas != null)
+		if ( parcelas == null ) {
+			if ( other.parcelas != null )
 				return false;
-		} else if (!parcelas.equals(other.parcelas))
+		} else if ( !parcelas.equals( other.parcelas ) )
 			return false;
 		return true;
 	}

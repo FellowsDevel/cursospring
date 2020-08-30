@@ -20,36 +20,36 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 @Entity
 public class Pedido implements Serializable {
 
-	private static final long serialVersionUID = -2044302110074934284L;
+	private static final long	serialVersionUID	= -2044302110074934284L;
 
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Integer id;
-	
-	@JsonFormat(pattern = "dd/MM/yyyy HH:mm")
-	private Date instante;
+	@GeneratedValue( strategy = GenerationType.IDENTITY )
+	private Integer				id;
+
+	@JsonFormat( pattern = "dd/MM/yyyy HH:mm" )
+	private Date				instante;
 
 	// cascade = CascadeType.ALL -> Necessário para nao dar problema de entidade
 	// transiente
 	// mappedy = "pedido" -> nome da entidade do tipo Pedido na classe de Pagamento
-	@OneToOne(cascade = CascadeType.ALL, mappedBy = "pedido")
-	private Pagamento pagamento;
+	@OneToOne( cascade = CascadeType.ALL, mappedBy = "pedido" )
+	private Pagamento			pagamento;
 
 	@ManyToOne
-	@JoinColumn(name = "cliente_id")
-	private Cliente cliente;
+	@JoinColumn( name = "cliente_id" )
+	private Cliente				cliente;
 
 	@ManyToOne
-	@JoinColumn(name = "endereco_entrega_id") // nome da coluna a ser criada no banco para referenciar as entidades
-	private Endereco entrega;
+	@JoinColumn( name = "endereco_entrega_id" ) // nome da coluna a ser criada no banco para referenciar as entidades
+	private Endereco			entrega;
 
-	@OneToMany(mappedBy = "id.pedido")
-	private Set<ItemPedido> itens = new HashSet<ItemPedido>();
+	@OneToMany( mappedBy = "id.pedido" )
+	private Set<ItemPedido>		itens				= new HashSet<ItemPedido>();
 
 	public Pedido() {
 	}
 
-	public Pedido(Integer id, Date instante, Cliente cliente, Endereco entrega) {
+	public Pedido( Integer id, Date instante, Cliente cliente, Endereco entrega ) {
 		super();
 		this.id = id;
 		this.instante = instante;
@@ -61,7 +61,7 @@ public class Pedido implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId( Integer id ) {
 		this.id = id;
 	}
 
@@ -69,7 +69,7 @@ public class Pedido implements Serializable {
 		return instante;
 	}
 
-	public void setInstante(Date instante) {
+	public void setInstante( Date instante ) {
 		this.instante = instante;
 	}
 
@@ -77,7 +77,7 @@ public class Pedido implements Serializable {
 		return pagamento;
 	}
 
-	public void setPagamento(Pagamento pagamento) {
+	public void setPagamento( Pagamento pagamento ) {
 		this.pagamento = pagamento;
 	}
 
@@ -85,7 +85,7 @@ public class Pedido implements Serializable {
 		return cliente;
 	}
 
-	public void setCliente(Cliente cliente) {
+	public void setCliente( Cliente cliente ) {
 		this.cliente = cliente;
 	}
 
@@ -93,7 +93,7 @@ public class Pedido implements Serializable {
 		return entrega;
 	}
 
-	public void setEntrega(Endereco entrega) {
+	public void setEntrega( Endereco entrega ) {
 		this.entrega = entrega;
 	}
 
@@ -101,7 +101,7 @@ public class Pedido implements Serializable {
 		return itens;
 	}
 
-	public void setItens(Set<ItemPedido> itens) {
+	public void setItens( Set<ItemPedido> itens ) {
 		this.itens = itens;
 	}
 
@@ -113,25 +113,25 @@ public class Pedido implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
+		final int	prime	= 31;
+		int			result	= 1;
+		result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals( Object obj ) {
+		if ( this == obj )
 			return true;
-		if (obj == null)
+		if ( obj == null )
 			return false;
-		if (getClass() != obj.getClass())
+		if ( getClass() != obj.getClass() )
 			return false;
 		Pedido other = (Pedido) obj;
-		if (id == null) {
-			if (other.id != null)
+		if ( id == null ) {
+			if ( other.id != null )
 				return false;
-		} else if (!id.equals(other.id))
+		} else if ( !id.equals( other.id ) )
 			return false;
 		return true;
 	}

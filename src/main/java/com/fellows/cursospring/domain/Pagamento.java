@@ -16,32 +16,30 @@ import com.fellows.cursospring.domain.enums.EstadoPagamento;
 @Entity
 
 /*
- * A Anotaçao abaixo faz com que o mapemento das entidades filhas de Pagamento
- * sejam mescladas em uma única tabela.
+ * A Anotaçao abaixo faz com que o mapemento das entidades filhas de Pagamento sejam mescladas em uma única tabela.
  */
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance( strategy = InheritanceType.JOINED )
 public abstract class Pagamento implements Serializable {
 
-	private static final long serialVersionUID = -8640319999223883298L;
+	private static final long	serialVersionUID	= -8640319999223883298L;
 
 	@Id
-	private Integer id;
-	private Integer estadoPagamento;
+	private Integer				id;
+	private Integer				estadoPagamento;
 
 	@JsonIgnore
 	/*
-	 * Essas anotações fazem com que essa classe Pagamento tenha a mesma chave "ÌD"
-	 * do pedido
+	 * Essas anotações fazem com que essa classe Pagamento tenha a mesma chave "ÌD" do pedido
 	 */
 	@OneToOne
-	@JoinColumn(name = "pedido_id")
+	@JoinColumn( name = "pedido_id" )
 	@MapsId
-	private Pedido pedido;
+	private Pedido				pedido;
 
 	public Pagamento() {
 	}
 
-	public Pagamento(Integer id, EstadoPagamento estadoPagamento, Pedido pedido) {
+	public Pagamento( Integer id, EstadoPagamento estadoPagamento, Pedido pedido ) {
 		super();
 		this.id = id;
 		this.estadoPagamento = estadoPagamento.getCod();
@@ -52,15 +50,15 @@ public abstract class Pagamento implements Serializable {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId( Integer id ) {
 		this.id = id;
 	}
 
 	public EstadoPagamento getEstadoPagamento() {
-		return EstadoPagamento.toEnum(estadoPagamento);
+		return EstadoPagamento.toEnum( estadoPagamento );
 	}
 
-	public void setEstadoPagamento(EstadoPagamento estadoPagamento) {
+	public void setEstadoPagamento( EstadoPagamento estadoPagamento ) {
 		this.estadoPagamento = estadoPagamento.getCod();
 	}
 
@@ -68,7 +66,7 @@ public abstract class Pagamento implements Serializable {
 		return pedido;
 	}
 
-	public void setPedido(Pedido pedido) {
+	public void setPedido( Pedido pedido ) {
 		this.pedido = pedido;
 	}
 
@@ -79,31 +77,31 @@ public abstract class Pagamento implements Serializable {
 
 	@Override
 	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result + ((id == null) ? 0 : id.hashCode());
-		result = prime * result + ((pedido == null) ? 0 : pedido.hashCode());
+		final int	prime	= 31;
+		int			result	= 1;
+		result = prime * result + ( ( id == null ) ? 0 : id.hashCode() );
+		result = prime * result + ( ( pedido == null ) ? 0 : pedido.hashCode() );
 		return result;
 	}
 
 	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
+	public boolean equals( Object obj ) {
+		if ( this == obj )
 			return true;
-		if (obj == null)
+		if ( obj == null )
 			return false;
-		if (getClass() != obj.getClass())
+		if ( getClass() != obj.getClass() )
 			return false;
 		Pagamento other = (Pagamento) obj;
-		if (id == null) {
-			if (other.id != null)
+		if ( id == null ) {
+			if ( other.id != null )
 				return false;
-		} else if (!id.equals(other.id))
+		} else if ( !id.equals( other.id ) )
 			return false;
-		if (pedido == null) {
-			if (other.pedido != null)
+		if ( pedido == null ) {
+			if ( other.pedido != null )
 				return false;
-		} else if (!pedido.equals(other.pedido))
+		} else if ( !pedido.equals( other.pedido ) )
 			return false;
 		return true;
 	}

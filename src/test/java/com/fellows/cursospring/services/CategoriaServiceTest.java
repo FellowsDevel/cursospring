@@ -19,44 +19,44 @@ import com.fellows.cursospring.services.exception.DataNotFoundException;
 class CategoriaServiceTest {
 
 	/*
-	 * A anotaçao abaixo deve ser utiizada na classe a ser testada ela injeta as
-	 * dependencias anotadas pelo @Mock quando se chama o initMocks
+	 * A anotaçao abaixo deve ser utiizada na classe a ser testada ela injeta as dependencias anotadas pelo @Mock quando
+	 * se chama o initMocks
 	 */
 	@InjectMocks
-	CategoriaService service;
+	CategoriaService	service;
 
 	@Mock
-	CategoriaRepository repo;
+	CategoriaRepository	repo;
 
 	@BeforeEach
 	void setUp() throws Exception {
-		MockitoAnnotations.initMocks(this);
+		MockitoAnnotations.initMocks( this );
 	}
 
 	@Test
 	void testFind() throws DataNotFoundException {
 
-		Categoria cat = new Categoria(1, "Categoria");
+		Categoria			cat			= new Categoria( 1, "Categoria" );
 
-		Optional<Categoria> optional = Optional.ofNullable(cat);
+		Optional<Categoria>	optional	= Optional.ofNullable( cat );
 
 		// regra do Mockito para injetar o objeto que viria do banco
 		// pois estamos testando a classe de serviço e nao a do repositorio
-		when(repo.findById(1)).thenReturn(optional);
+		when( repo.findById( 1 ) ).thenReturn( optional );
 
-		Categoria resp = service.find(1);
+		Categoria resp = service.find( 1 );
 
-		assertEquals(cat.getNome(), resp.getNome());
+		assertEquals( cat.getNome(), resp.getNome() );
 	}
 
 	@Test
 	void testFind_NotFound() {
-		
-		when(repo.findById(1)).thenReturn(Optional.empty());
-		
-		assertThrows(DataNotFoundException.class, () -> {
-			service.find(1);
-		});
+
+		when( repo.findById( 1 ) ).thenReturn( Optional.empty() );
+
+		assertThrows( DataNotFoundException.class, () -> {
+			service.find( 1 );
+		} );
 	}
 
 }

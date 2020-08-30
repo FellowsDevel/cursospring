@@ -17,27 +17,27 @@ public class ClienteService {
 	@Autowired
 	private ClienteRepository repo;
 
-	public Cliente find(Integer id) throws DataNotFoundException {
-		Optional<Cliente> obj = repo.findById(id);
-		return obj.orElseThrow(() -> new DataNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName()));
-	}
-	
-	public Cliente insert(Cliente obj) {
-		obj.setId(null);
-		return repo.save(obj);
+	public Cliente find( Integer id ) throws DataNotFoundException {
+		Optional<Cliente> obj = repo.findById( id );
+		return obj.orElseThrow( () -> new DataNotFoundException(
+				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName() ) );
 	}
 
-	public Cliente update(Cliente obj, Integer id) throws DataNotFoundException {
-		find(id);
-		return repo.save(obj);
+	public Cliente insert( Cliente obj ) {
+		obj.setId( null );
+		return repo.save( obj );
 	}
 
-	public void delete(Integer id) throws DataIntegrityException {
+	public Cliente update( Cliente obj, Integer id ) throws DataNotFoundException {
+		find( id );
+		return repo.save( obj );
+	}
+
+	public void delete( Integer id ) throws DataIntegrityException {
 		try {
-			repo.deleteById(id);
-		} catch (DataIntegrityViolationException e) {
-			throw new DataIntegrityException(e.getMessage());
+			repo.deleteById( id );
+		} catch ( DataIntegrityViolationException e ) {
+			throw new DataIntegrityException( e.getMessage() );
 		}
 	}
 }

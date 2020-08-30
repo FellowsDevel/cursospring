@@ -9,26 +9,26 @@ import com.fellows.cursospring.domain.Categoria;
 
 public class CategoriaDTO implements Serializable {
 
-	private static final long serialVersionUID = -8365368161711483187L;
-	private Integer id;
+	private static final long	serialVersionUID	= -8365368161711483187L;
+	private Integer				id;
 
-	@NotEmpty(message = "O nome da categoria não pode ser vazia!")
-	@Size(min = 5, max = 80, message = "O nome deve ter entre 5 e 80 caracteres")
-	private String nome;
+	@NotEmpty( message = "O nome da categoria não pode ser vazia!" )
+	@Size( min = 5, max = 80, message = "O nome deve ter entre 5 e 80 caracteres" )
+	private String				nome;
 
 	public CategoriaDTO() {
 	}
 
-	public CategoriaDTO(Categoria obj) {
-		this.setId(obj.getId());
-		this.setNome(obj.getNome());
+	public CategoriaDTO( Categoria obj ) {
+		this.setId( obj.getId() );
+		this.setNome( obj.getNome() );
 	}
 
 	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Integer id) {
+	public void setId( Integer id ) {
 		this.id = id;
 	}
 
@@ -36,7 +36,7 @@ public class CategoriaDTO implements Serializable {
 		return nome;
 	}
 
-	public void setNome(String nome) {
+	public void setNome( String nome ) {
 		this.nome = nome;
 	}
 

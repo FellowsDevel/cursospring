@@ -8,8 +8,8 @@ import org.springframework.util.Assert;
 class CursospringApplicationTests {
 
 	@Test
-	void contextLoads() {		
-		Assert.notNull(new CursospringApplication(), "error");
+	void contextLoads() {
+		Assert.notNull( new CursospringApplication(), "error" );
 	}
 
 }
