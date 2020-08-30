@@ -34,8 +34,13 @@ public class CategoriaService {
 	}
 
 	public Categoria update( Categoria obj, Integer id ) throws DataNotFoundException {
-		find( id );
-		return repo.save( obj );
+		Categoria c = find( id );
+		updateData( c, obj );
+		return repo.save( c );
+	}
+
+	private void updateData( Categoria c, Categoria obj ) {
+		c.setNome( obj.getNome() );
 	}
 
 	public void delete( Integer id ) throws DataIntegrityException {
