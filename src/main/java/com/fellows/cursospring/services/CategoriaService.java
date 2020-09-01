@@ -9,6 +9,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.fellows.cursospring.domain.Categoria;
 import com.fellows.cursospring.dto.CategoriaDTO;
@@ -20,7 +21,7 @@ import com.fellows.cursospring.services.exception.DataNotFoundException;
 public class CategoriaService {
 
 	@Autowired
-	private CategoriaRepository repo;
+	private CategoriaRepository	repo;
 
 	public Categoria find( Integer id ) throws DataNotFoundException {
 		Optional<Categoria> obj = repo.findById( id );
@@ -28,9 +29,11 @@ public class CategoriaService {
 				"Objeto não encontrado! Id: " + id + ", Tipo: " + Categoria.class.getName() ) );
 	}
 
+	@Transactional
 	public Categoria insert( Categoria obj ) {
 		obj.setId( null );
-		return repo.save( obj );
+		obj = repo.save( obj );
+		return obj;
 	}
 
 	public Categoria update( Categoria obj, Integer id ) throws DataNotFoundException {
