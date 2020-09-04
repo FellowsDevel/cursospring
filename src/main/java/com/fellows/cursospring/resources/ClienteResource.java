@@ -54,8 +54,9 @@ public class ClienteResource {
 	}
 
 	@RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
-	public void delete( @PathVariable Integer id ) throws DataIntegrityException {
+	public ResponseEntity<Void> delete( @PathVariable Integer id ) throws DataIntegrityException {
 		service.delete( id );
+		return ResponseEntity.noContent().build();
 	}
 
 	@RequestMapping( method = RequestMethod.GET )

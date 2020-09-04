@@ -75,7 +75,7 @@ class ClienteResourceTest {
 
 		mockMvc.perform( delete( "/clientes/2" )
 				.contentType( MediaType.APPLICATION_JSON )
-				).andExpect( status().isOk() );
+				).andExpect( status().isNoContent() );
 
 		Cliente cliDb = clienteRepo.findById( 2 ).orElse( null );
 
