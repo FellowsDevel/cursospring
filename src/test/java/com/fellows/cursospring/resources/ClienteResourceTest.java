@@ -51,7 +51,8 @@ class ClienteResourceTest {
 		cli.setCep( "12.123-123" );
 		cli.setCidadeId( 1 );
 		cli.setComplemento( "complemento" );
-		cli.setCpfOuCnpj( "123.123.123-12" );
+		cli.setCpfOuCnpj( "02212719450" );
+		cli.setTipo( 1 );
 		cli.setEmail( "nome@email.com" );
 		cli.setLogradouro( "Logradouro do cliente novo" );
 		cli.setNome( "Novo nome" );
