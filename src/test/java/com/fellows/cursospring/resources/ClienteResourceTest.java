@@ -1,6 +1,8 @@
 package com.fellows.cursospring.resources;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -66,4 +68,17 @@ class ClienteResourceTest {
 		assertThat( cliDb.getEmail() ).isEqualTo( "nome@email.com" );
 	}
 
+	@Test
+	void delete_cliente() throws Exception {
+		
+		insert();
+
+		mockMvc.perform( delete( "/clientes/2" )
+				.contentType( MediaType.APPLICATION_JSON )
+				).andExpect( status().isOk() );
+
+		Cliente cliDb = clienteRepo.findById( 2 ).orElse( null );
+
+		assertNull( cliDb );
+	}
 }
