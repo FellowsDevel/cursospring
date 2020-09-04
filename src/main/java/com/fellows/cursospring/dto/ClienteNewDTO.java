@@ -21,7 +21,7 @@ public class ClienteNewDTO implements Serializable {
 	private String				telefone3;
 
 	private Integer				cidadeId;
-	
+
 	public ClienteNewDTO() {
 	}
 
@@ -128,7 +128,5 @@ public class ClienteNewDTO implements Serializable {
 	public void setCidadeId( Integer cidadeId ) {
 		this.cidadeId = cidadeId;
 	}
-	
-	
 
 }

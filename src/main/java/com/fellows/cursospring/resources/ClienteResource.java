@@ -66,7 +66,8 @@ public class ClienteResource {
 	}
 
 	@RequestMapping( value = "/page", method = RequestMethod.GET )
-	public ResponseEntity<Page<ClienteDTO>> paginate( @RequestParam( value = "page", defaultValue = "0" ) Integer page,
+	public ResponseEntity<Page<ClienteDTO>> paginate(
+			@RequestParam( value = "page", defaultValue = "0" ) Integer page,
 			@RequestParam( value = "size", defaultValue = "24" ) Integer size,
 			@RequestParam( value = "orderBy", defaultValue = "nome" ) String orderBy,
 			@RequestParam( value = "direction", defaultValue = "ASC" ) String direction ) {

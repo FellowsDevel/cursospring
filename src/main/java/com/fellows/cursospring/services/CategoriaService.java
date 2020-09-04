@@ -21,7 +21,7 @@ import com.fellows.cursospring.services.exception.DataNotFoundException;
 public class CategoriaService {
 
 	@Autowired
-	private CategoriaRepository	repo;
+	private CategoriaRepository repo;
 
 	public Categoria find( Integer id ) throws DataNotFoundException {
 		Optional<Categoria> obj = repo.findById( id );
