@@ -11,6 +11,7 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fellows.cursospring.domain.enums.EstadoPagamento;
 
 @Entity
@@ -19,6 +20,12 @@ import com.fellows.cursospring.domain.enums.EstadoPagamento;
  * A Anotaçao abaixo faz com que o mapemento das entidades filhas de Pagamento sejam mescladas em uma única tabela.
  */
 @Inheritance( strategy = InheritanceType.JOINED )
+
+
+// Essa anotacao abaixo é para o Jackson deserializar o JSON e instanciar a classe correta
+// A classe que devera ser instanciada tem a anotacao de @JsonTypeName com o nome da classe a ser instanciada
+// pois as classes que sao instanciadas extendem dessa daqui
+@JsonTypeInfo( use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "@type" )
 public abstract class Pagamento implements Serializable {
 
 	private static final long	serialVersionUID	= -8640319999223883298L;
