@@ -58,6 +58,10 @@ public class CategoriaService {
 		return repo.findAll();
 	}
 
+	public List<Categoria> findAll( List<Integer> ids ) {
+		return repo.findAllById( ids );
+	}
+
 	public Page<Categoria> paginate( Integer page, Integer size, String orderBy, String direction ) {
 		PageRequest pr = PageRequest.of( page, size, Direction.valueOf( direction ), orderBy );
 		return repo.findAll( pr );
