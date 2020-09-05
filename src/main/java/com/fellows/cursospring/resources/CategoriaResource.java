@@ -38,7 +38,7 @@ public class CategoriaResource {
 
 	@RequestMapping( method = RequestMethod.POST )
 	public ResponseEntity<Void> insert( @Valid @RequestBody CategoriaDTO objDTO ) {
-		Categoria	obj	= service.insert( service.fromDTO( objDTO ) );
+		Categoria	obj	= service.insert( CategoriaService.fromDTO( objDTO ) );
 		URI			uri	= ServletUriComponentsBuilder.fromCurrentRequest().path( "/{id}" ).buildAndExpand( obj.getId() )
 				.toUri();
 		return ResponseEntity.created( uri ).build();
@@ -48,7 +48,7 @@ public class CategoriaResource {
 	public ResponseEntity<Void> update( @Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id )
 			throws DataNotFoundException {
 		objDTO.setId( id );
-		service.update( service.fromDTO( objDTO ), id );
+		service.update( CategoriaService.fromDTO( objDTO ), id );
 		return ResponseEntity.noContent().build();
 	}
 

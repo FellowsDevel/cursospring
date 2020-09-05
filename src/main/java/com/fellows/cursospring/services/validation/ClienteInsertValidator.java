@@ -6,12 +6,19 @@ import java.util.List;
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
 
+import org.springframework.beans.factory.annotation.Autowired;
+
+import com.fellows.cursospring.domain.Cliente;
 import com.fellows.cursospring.domain.enums.TipoCliente;
 import com.fellows.cursospring.dto.ClienteNewDTO;
+import com.fellows.cursospring.repositories.ClienteRepository;
 import com.fellows.cursospring.resources.exceptions.FieldMessage;
 import com.fellows.cursospring.services.validation.utils.BR;
 
 public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert, ClienteNewDTO> {
+
+	@Autowired
+	private ClienteRepository repo;
 
 	@Override
 	public void initialize( ClienteInsert constraintAnnotation ) {
@@ -31,6 +38,12 @@ public class ClienteInsertValidator implements ConstraintValidator<ClienteInsert
 				list.add( new FieldMessage( "CNPJ", "CNPJ inválido" ) );
 			}
 		}
+
+		Cliente aux = repo.findByEmail( value.getEmail() );
+		if ( aux != null ) {
+			list.add( new FieldMessage( "email", "Email já existe!" ) );
+		}
+
 		for ( FieldMessage fm : list ) {
 			context.disableDefaultConstraintViolation();
 			context.buildConstraintViolationWithTemplate( fm.getMessage() ).addPropertyNode( fm.getFiledName() )

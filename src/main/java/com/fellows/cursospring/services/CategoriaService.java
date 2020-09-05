@@ -63,7 +63,7 @@ public class CategoriaService {
 		return repo.findAll( pr );
 	}
 
-	public Categoria fromDTO( CategoriaDTO objDTO ) {
+	public static Categoria fromDTO( CategoriaDTO objDTO ) {
 		return new Categoria( objDTO.getId(), objDTO.getNome() );
 	}
 
