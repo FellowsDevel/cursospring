@@ -57,6 +57,10 @@ public class Pedido implements Serializable {
 		this.entrega = entrega;
 	}
 
+	public double getValorTotal() {
+		return itens.stream().map( x -> x.getSubtotal() ).reduce( 0.0, ( a, b ) -> a + b );
+	}
+
 	public Integer getId() {
 		return id;
 	}
