@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -176,6 +177,108 @@ class ClienteResourceTest {
 
 					clienteRepo.save( ClienteService.fromDTO( cli ) );
 				} );
+
+	}
+
+	@Test
+	void update_email_duplicado_repo() {
+
+		try {
+			ClienteNewDTO cli = new ClienteNewDTO();
+			cli.setBairro( "Bairro" );
+			cli.setCep( "12.123-123" );
+			cli.setCidadeId( 1 );
+			cli.setComplemento( "complemento" );
+			cli.setCpfOuCnpj( "02212719450" );
+			cli.setTipo( 1 );
+			cli.setEmail( "meuemail001@email.com" );
+			cli.setLogradouro( "Logradouro do cliente novo" );
+			cli.setNome( "Novo nome" );
+			cli.setNumero( "123 B" );
+			cli.setTelefone1( "2222111" );
+			cli.setTelefone2( "333333" );
+
+			mockMvc.perform( post( "/clientes" )
+					.contentType( MediaType.APPLICATION_JSON )
+					.content( mapper.writeValueAsString( cli ) ) ).andExpect( status().isCreated() );
+
+			ClienteNewDTO cli2 = new ClienteNewDTO();
+			cli2.setBairro( "Bairro" );
+			cli2.setCep( "12.123-123" );
+			cli2.setCidadeId( 1 );
+			cli2.setComplemento( "complemento" );
+			cli2.setCpfOuCnpj( "02212719450" );
+			cli2.setTipo( 1 );
+			cli2.setEmail( "meuemail002@email.com" );
+			cli2.setLogradouro( "Logradouro do cliente novo" );
+			cli2.setNome( "Novo nome" );
+			cli2.setNumero( "123 B" );
+			cli2.setTelefone1( "2222111" );
+			cli2.setTelefone2( "333333" );
+
+			mockMvc.perform( post( "/clientes" )
+					.contentType( MediaType.APPLICATION_JSON )
+					.content( mapper.writeValueAsString( cli2 ) ) ).andExpect( status().isCreated() );
+
+			assertThrows( DataIntegrityViolationException.class,
+					() -> {
+						cli2.setEmail( cli.getEmail() );
+						clienteRepo.save( ClienteService.fromDTO( cli ) );
+					} );
+		} catch ( Exception e ) {
+			e.printStackTrace();
+		}
+
+	}
+
+	@Test
+	void update_email_duplicado() throws JsonProcessingException, Exception {
+
+		ClienteNewDTO cli = new ClienteNewDTO();
+		cli.setBairro( "Bairro" );
+		cli.setCep( "12.123-123" );
+		cli.setCidadeId( 1 );
+		cli.setComplemento( "complemento" );
+		cli.setCpfOuCnpj( "02212719450" );
+		cli.setTipo( 1 );
+		cli.setEmail( "meuemail005@email.com" );
+		cli.setLogradouro( "Logradouro do cliente novo" );
+		cli.setNome( "Novo nome" );
+		cli.setNumero( "123 B" );
+		cli.setTelefone1( "2222111" );
+		cli.setTelefone2( "333333" );
+
+		mockMvc.perform( post( "/clientes" )
+				.contentType( MediaType.APPLICATION_JSON )
+				.content( mapper.writeValueAsString( cli ) ) ).andExpect( status().isCreated() );
+
+		ClienteNewDTO cli2 = new ClienteNewDTO();
+		cli2.setBairro( "Bairro" );
+		cli2.setCep( "12.123-123" );
+		cli2.setCidadeId( 1 );
+		cli2.setComplemento( "complemento" );
+		cli2.setCpfOuCnpj( "02212719450" );
+		cli2.setTipo( 1 );
+		cli2.setEmail( "meuemail006@email.com" );
+		cli2.setLogradouro( "Logradouro do cliente novo" );
+		cli2.setNome( "Novo nome" );
+		cli2.setNumero( "123 B" );
+		cli2.setTelefone1( "2222111" );
+		cli2.setTelefone2( "333333" );
+
+		mockMvc.perform( post( "/clientes" )
+				.contentType( MediaType.APPLICATION_JSON )
+				.content( mapper.writeValueAsString( cli2 ) ) ).andExpect( status().isCreated() );
+
+		Cliente resp2 = clienteRepo.findByEmail( cli2.getEmail() );
+
+		cli2.setEmail( cli.getEmail() );
+		
+		mockMvc.perform( put( "/clientes/" + resp2.getId() )
+				.contentType( MediaType.APPLICATION_JSON )
+				.content( mapper.writeValueAsString( cli2 ) ) )
+				.andExpect( status().isBadRequest() )
+				.andExpect( jsonPath( "$.errors[0].message" ).value( "Email já existe!" ) );
 
 	}
 }

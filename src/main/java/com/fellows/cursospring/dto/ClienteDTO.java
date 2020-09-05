@@ -7,7 +7,9 @@ import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.Size;
 
 import com.fellows.cursospring.domain.Cliente;
+import com.fellows.cursospring.services.validation.ClienteUpdate;
 
+@ClienteUpdate
 public class ClienteDTO implements Serializable {
 
 	private static final long	serialVersionUID	= -1881928248264711532L;
