@@ -30,7 +30,7 @@ public class PedidoResource {
 	}
 
 	@RequestMapping( method = RequestMethod.POST )
-	public ResponseEntity<Void> insert( @RequestBody Pedido obj ) {
+	public ResponseEntity<Void> insert( @RequestBody Pedido obj ) throws DataNotFoundException {
 		obj = service.insert( obj );
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path( "/{id}" ).buildAndExpand( obj.getId() )
 				.toUri();

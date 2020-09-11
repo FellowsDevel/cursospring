@@ -36,6 +36,9 @@ public class PedidoService {
 	@Autowired
 	private ItemPedidoRepository	itemPedidoRepository;
 
+	@Autowired
+	private ClienteService			clienteService;
+
 	public Pedido find( Integer id ) throws DataNotFoundException {
 		Optional<Pedido> obj = repo.findById( id );
 		return obj.orElseThrow( () -> new DataNotFoundException(
@@ -43,9 +46,10 @@ public class PedidoService {
 	}
 
 	@Transactional
-	public Pedido insert( Pedido obj ) {
+	public Pedido insert( Pedido obj ) throws DataNotFoundException {
 		obj.setId( null );
 		obj.setInstante( new Date() );
+		obj.setCliente( clienteService.find( obj.getCliente().getId() ) );
 		obj.getPagamento().setEstadoPagamento( EstadoPagamento.PENDENTE );
 		obj.getPagamento().setPedido( obj );
 		if ( obj.getPagamento() instanceof PagamentoBoleto ) {
@@ -58,14 +62,15 @@ public class PedidoService {
 		for ( ItemPedido ip : obj.getItens() ) {
 			try {
 				ip.setDesconto( 0.0 );
-				ip.setPreco( produtoService.find( ip.getProduto().getId() ).getPreco() );
+				ip.setProduto( produtoService.find( ip.getProduto().getId() ) );
+				ip.setPreco( ip.getProduto().getPreco() );
 				ip.setPedido( obj );
 			} catch ( DataNotFoundException e ) {
 			}
 		}
 
 		itemPedidoRepository.saveAll( obj.getItens() );
-
+		System.out.println( obj );
 		return obj;
 	}
 
