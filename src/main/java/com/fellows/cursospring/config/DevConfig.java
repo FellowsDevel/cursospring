@@ -23,7 +23,7 @@ public class DevConfig {
 	private String		strategy;
 
 	/*
-	 * Esta configuraçao indica que todos os Beans aqui listados serão ativados apenas quando o profile "test" estiver
+	 * Esta configuraçao indica que todos os Beans aqui listados serão ativados apenas quando o profile "dev" estiver
 	 * ativo
 	 */
 	@Bean
