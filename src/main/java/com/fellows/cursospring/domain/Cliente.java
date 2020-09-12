@@ -28,33 +28,49 @@ public class Cliente implements Serializable {
 	@GeneratedValue( strategy = GenerationType.IDENTITY )
 	private Integer				id;
 	private String				nome;
-	
-	@Column(unique = true)
+
+	@Column( unique = true )
 	private String				email;
 	private String				cpfOuCnpj;
 	private Integer				tipo;
 
+	@JsonIgnore
+	private String				senha;
+
+	public String getSenha() {
+		return senha;
+	}
+
+	public void setSenha( String senha ) {
+		this.senha = senha;
+	}
+
+	public void setTipo( Integer tipo ) {
+		this.tipo = tipo;
+	}
+
 	@OneToMany( mappedBy = "cliente", cascade = CascadeType.ALL )
-	private List<Endereco>		enderecos			= new ArrayList<Endereco>();
+	private List<Endereco>	enderecos	= new ArrayList<Endereco>();
 
 	@ElementCollection
 	@CollectionTable( name = "TELEFONE" )
-	private Set<String>			telefones			= new HashSet<String>();
+	private Set<String>		telefones	= new HashSet<String>();
 
 	@JsonIgnore
 	@OneToMany( mappedBy = "cliente" ) // nome da referencia dessa classe na classe Pedido
-	private List<Pedido>		pedidos				= new ArrayList<Pedido>();
+	private List<Pedido>	pedidos		= new ArrayList<Pedido>();
 
 	public Cliente() {
 	}
 
-	public Cliente( Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo ) {
+	public Cliente( Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha ) {
 		super();
 		this.id = id;
 		this.nome = nome;
 		this.email = email;
 		this.cpfOuCnpj = cpfOuCnpj;
 		this.tipo = tipo == null ? null : tipo.getCod();
+		setSenha(senha);
 	}
 
 	public Integer getId() {
