@@ -5,18 +5,21 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import javax.persistence.CascadeType;
 import javax.persistence.CollectionTable;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fellows.cursospring.domain.enums.Perfil;
 import com.fellows.cursospring.domain.enums.TipoCliente;
 
 @Entity
@@ -37,6 +40,36 @@ public class Cliente implements Serializable {
 	@JsonIgnore
 	private String				senha;
 
+	@OneToMany( mappedBy = "cliente", cascade = CascadeType.ALL )
+	private List<Endereco>		enderecos			= new ArrayList<Endereco>();
+
+	@ElementCollection
+	@CollectionTable( name = "TELEFONE" )
+	private Set<String>			telefones			= new HashSet<String>();
+
+	@JsonIgnore
+	@OneToMany( mappedBy = "cliente" ) // nome da referencia dessa classe na classe Pedido
+	private List<Pedido>		pedidos				= new ArrayList<Pedido>();
+
+	@ElementCollection( fetch = FetchType.EAGER )
+	@CollectionTable( name = "PERFIS" )
+	private Set<Integer>		perfis				= new HashSet<Integer>();
+
+	public Cliente() {
+		addPerfil( Perfil.CLIENTE );
+	}
+
+	public Cliente( Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha ) {
+		super();
+		this.id = id;
+		this.nome = nome;
+		this.email = email;
+		this.cpfOuCnpj = cpfOuCnpj;
+		this.tipo = tipo == null ? null : tipo.getCod();
+		setSenha( senha );
+		addPerfil( Perfil.CLIENTE );
+	}
+
 	public String getSenha() {
 		return senha;
 	}
@@ -49,28 +82,17 @@ public class Cliente implements Serializable {
 		this.tipo = tipo;
 	}
 
-	@OneToMany( mappedBy = "cliente", cascade = CascadeType.ALL )
-	private List<Endereco>	enderecos	= new ArrayList<Endereco>();
-
-	@ElementCollection
-	@CollectionTable( name = "TELEFONE" )
-	private Set<String>		telefones	= new HashSet<String>();
-
-	@JsonIgnore
-	@OneToMany( mappedBy = "cliente" ) // nome da referencia dessa classe na classe Pedido
-	private List<Pedido>	pedidos		= new ArrayList<Pedido>();
-
-	public Cliente() {
+	public Set<Perfil> getPerfis() {
+		return perfis.stream().map( p -> Perfil.toEnum( p ) ).collect( Collectors.toSet() );
 	}
 
-	public Cliente( Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo, String senha ) {
-		super();
-		this.id = id;
-		this.nome = nome;
-		this.email = email;
-		this.cpfOuCnpj = cpfOuCnpj;
-		this.tipo = tipo == null ? null : tipo.getCod();
-		setSenha(senha);
+	public void setPerfis( Set<Perfil> perfis ) {
+		this.perfis.clear();
+		this.perfis = perfis.stream().map( p -> p.getCod() ).collect( Collectors.toSet() );
+	}
+
+	public void addPerfil( Perfil perfil ) {
+		this.perfis.add( perfil.getCod() );
 	}
 
 	public Integer getId() {

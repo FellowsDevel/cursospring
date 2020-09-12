@@ -20,6 +20,7 @@ import com.fellows.cursospring.domain.PagamentoCartao;
 import com.fellows.cursospring.domain.Pedido;
 import com.fellows.cursospring.domain.Produto;
 import com.fellows.cursospring.domain.enums.EstadoPagamento;
+import com.fellows.cursospring.domain.enums.Perfil;
 import com.fellows.cursospring.domain.enums.TipoCliente;
 import com.fellows.cursospring.repositories.CategoriaRepository;
 import com.fellows.cursospring.repositories.CidadeRepository;
@@ -130,13 +131,23 @@ public class DBService {
 				be.encode( "123" ) );
 		c1.getTelefones().addAll( Arrays.asList( "123", "222" ) );
 
+		Cliente c2 = new Cliente( null, "André Novo Cliente", "fellows.devel@gmail.com", "21862323240",
+				TipoCliente.PESSOAFISICA,
+				be.encode( "123" ) );
+		c2.addPerfil( Perfil.ADMIN );
+		c2.getTelefones().addAll( Arrays.asList( "333", "444" ) );
+
 		Endereco	e1	= new Endereco( null, "Rua daqui", "123", "em casa", "Casa Amarela", "52070080", c1, cid1 );
 		Endereco	e2	= new Endereco( null, "Rua matos", "33", "ap 22", "Torre", "52333080", c1, cid4 );
 
-		c1.getEnderecos().addAll( Arrays.asList( e1, e2 ) );
+		Endereco	e3	= new Endereco( null, "Rua daqui", "123", "em casa", "Casa Amarela", "52070080", c2, cid1 );
+		Endereco	e4	= new Endereco( null, "Rua matos", "33", "ap 11", "Torre", "52333080", c2, cid4 );
 
-		clienteRepository.saveAll( Arrays.asList( c1 ) );
-		enderecoRepository.saveAll( Arrays.asList( e1, e2 ) );
+		c1.getEnderecos().addAll( Arrays.asList( e1, e2 ) );
+		c2.getEnderecos().addAll( Arrays.asList( e3, e4 ) );
+
+		clienteRepository.saveAll( Arrays.asList( c1, c2 ) );
+		enderecoRepository.saveAll( Arrays.asList( e1, e2, e3, e4 ) );
 
 		SimpleDateFormat	sdf		= new SimpleDateFormat( "dd/MM/yyyy HH:mm" );
 		Pedido				ped1	= new Pedido( null, sdf.parse( "30/09/2019 12:32" ), c1, e1 );
