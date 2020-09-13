@@ -19,6 +19,7 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.fellows.cursospring.security.JWTAuthenticationFilter;
+import com.fellows.cursospring.security.JWTAuthorizationFilter;
 import com.fellows.cursospring.security.JWTUtil;
 
 @Configuration
@@ -42,6 +43,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 															"/categorias/**"
 	};
 
+	/*
+	 * Configura os filtros de autenticaçao e autorizaçao
+	 * bom como as demais necessarias para controle de requisicoes HTTP 
+	 */
 	@Override
 	protected void configure( HttpSecurity http ) throws Exception {
 
@@ -55,7 +60,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 			.antMatchers( PUBLIC_MATCHERS ).permitAll()
 			.anyRequest().authenticated();
 
-		http.addFilter( new JWTAuthenticationFilter( jwtUtil, authenticationManager() ) );
+		http.addFilter( new JWTAuthenticationFilter( authenticationManager(), jwtUtil ) );
+		http.addFilter( new JWTAuthorizationFilter( authenticationManager(), jwtUtil, userDetailsService ) );
 		http.sessionManagement().sessionCreationPolicy( SessionCreationPolicy.STATELESS );
 	}
 
