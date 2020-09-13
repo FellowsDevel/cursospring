@@ -5,9 +5,13 @@ import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fellows.cursospring.domain.Cliente;
 import com.fellows.cursospring.domain.ItemPedido;
 import com.fellows.cursospring.domain.PagamentoBoleto;
 import com.fellows.cursospring.domain.Pedido;
@@ -15,6 +19,7 @@ import com.fellows.cursospring.domain.enums.EstadoPagamento;
 import com.fellows.cursospring.repositories.ItemPedidoRepository;
 import com.fellows.cursospring.repositories.PagamentoRepository;
 import com.fellows.cursospring.repositories.PedidoRepository;
+import com.fellows.cursospring.security.UserSS;
 import com.fellows.cursospring.services.exception.AuthorizationException;
 import com.fellows.cursospring.services.exception.DataIntegrityException;
 import com.fellows.cursospring.services.exception.DataNotFoundException;
@@ -46,7 +51,7 @@ public class PedidoService {
 	public Pedido find( Integer id ) throws DataNotFoundException {
 		Optional<Pedido> obj = repo.findById( id );
 		return obj.orElseThrow( () -> new DataNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName() ) );
+			"Objeto não encontrado! Id: " + id + ", Tipo: " + Pedido.class.getName() ) );
 	}
 
 	@Transactional
@@ -74,7 +79,6 @@ public class PedidoService {
 		}
 
 		itemPedidoRepository.saveAll( obj.getItens() );
-//		System.out.println( obj );
 		emailService.sendOrderConfirmationHtmlEmail( obj );
 		return obj;
 	}
@@ -90,5 +94,19 @@ public class PedidoService {
 		} catch ( DataIntegrityViolationException e ) {
 			throw new DataIntegrityException( e.getMessage() );
 		}
+	}
+
+	public Page<Pedido> findPage( Integer page, Integer linesPerPage, String orderBy, String direction )
+		throws AuthorizationException, DataNotFoundException {
+		
+		UserSS user = UserService.authenticated();
+		
+		if ( user == null ) {
+			throw new AuthorizationException();
+		}
+		
+		PageRequest	pageRequest	= PageRequest.of( page, linesPerPage, Direction.valueOf( direction ), orderBy );
+		Cliente		cliente		= clienteService.find( user.getId() );
+		return repo.findByCliente( cliente, pageRequest );
 	}
 }
