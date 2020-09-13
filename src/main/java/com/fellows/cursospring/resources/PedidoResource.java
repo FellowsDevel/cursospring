@@ -13,6 +13,7 @@ import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import com.fellows.cursospring.domain.Pedido;
 import com.fellows.cursospring.services.PedidoService;
+import com.fellows.cursospring.services.exception.AuthorizationException;
 import com.fellows.cursospring.services.exception.DataIntegrityException;
 import com.fellows.cursospring.services.exception.DataNotFoundException;
 
@@ -30,7 +31,7 @@ public class PedidoResource {
 	}
 
 	@RequestMapping( method = RequestMethod.POST )
-	public ResponseEntity<Void> insert( @RequestBody Pedido obj ) throws DataNotFoundException {
+	public ResponseEntity<Void> insert( @RequestBody Pedido obj ) throws DataNotFoundException, AuthorizationException {
 		obj = service.insert( obj );
 		URI uri = ServletUriComponentsBuilder.fromCurrentRequest().path( "/{id}" ).buildAndExpand( obj.getId() )
 				.toUri();

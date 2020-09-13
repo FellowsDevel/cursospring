@@ -22,6 +22,7 @@ import com.fellows.cursospring.domain.Cliente;
 import com.fellows.cursospring.dto.ClienteDTO;
 import com.fellows.cursospring.dto.ClienteNewDTO;
 import com.fellows.cursospring.services.ClienteService;
+import com.fellows.cursospring.services.exception.AuthorizationException;
 import com.fellows.cursospring.services.exception.DataIntegrityException;
 import com.fellows.cursospring.services.exception.DataNotFoundException;
 
@@ -33,7 +34,7 @@ public class ClienteResource {
 	private ClienteService service;
 
 	@RequestMapping( value = "/{id}", method = RequestMethod.GET )
-	public ResponseEntity<Cliente> find( @PathVariable Integer id ) throws DataNotFoundException {
+	public ResponseEntity<Cliente> find( @PathVariable Integer id ) throws DataNotFoundException, AuthorizationException {
 		Cliente obj = service.find( id );
 		return ResponseEntity.ok().body( obj );
 	}
@@ -48,7 +49,7 @@ public class ClienteResource {
 
 	@RequestMapping( value = "/{id}", method = RequestMethod.PUT )
 	public ResponseEntity<Void> update( @Valid @RequestBody ClienteDTO objDTO, @PathVariable Integer id )
-			throws DataNotFoundException {
+			throws DataNotFoundException, AuthorizationException {
 		objDTO.setId( id );
 		service.update( service.fromDTO( objDTO ), id );
 		return ResponseEntity.noContent().build();

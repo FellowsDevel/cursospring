@@ -28,7 +28,7 @@ public class UserSS implements UserDetails {
 		this.email = email;
 		this.senha = senha;
 		this.authorities = perfis.stream().map( x -> new SimpleGrantedAuthority( x.getDesc() ) )
-				.collect( Collectors.toSet() );
+			.collect( Collectors.toSet() );
 	}
 
 	@Override
@@ -68,6 +68,10 @@ public class UserSS implements UserDetails {
 	@Override
 	public boolean isEnabled() {
 		return true;
+	}
+
+	public boolean hasRole( Perfil perfil ) {
+		return getAuthorities().contains( new SimpleGrantedAuthority( perfil.getDesc() ) );
 	}
 
 }

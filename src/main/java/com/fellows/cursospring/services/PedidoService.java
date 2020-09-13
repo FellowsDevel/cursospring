@@ -15,6 +15,7 @@ import com.fellows.cursospring.domain.enums.EstadoPagamento;
 import com.fellows.cursospring.repositories.ItemPedidoRepository;
 import com.fellows.cursospring.repositories.PagamentoRepository;
 import com.fellows.cursospring.repositories.PedidoRepository;
+import com.fellows.cursospring.services.exception.AuthorizationException;
 import com.fellows.cursospring.services.exception.DataIntegrityException;
 import com.fellows.cursospring.services.exception.DataNotFoundException;
 
@@ -49,7 +50,7 @@ public class PedidoService {
 	}
 
 	@Transactional
-	public Pedido insert( Pedido obj ) throws DataNotFoundException {
+	public Pedido insert( Pedido obj ) throws DataNotFoundException, AuthorizationException {
 		obj.setId( null );
 		obj.setInstante( new Date() );
 		obj.setCliente( clienteService.find( obj.getCliente().getId() ) );

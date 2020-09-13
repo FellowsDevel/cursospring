@@ -15,11 +15,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.fellows.cursospring.domain.Cidade;
 import com.fellows.cursospring.domain.Cliente;
 import com.fellows.cursospring.domain.Endereco;
+import com.fellows.cursospring.domain.enums.Perfil;
 import com.fellows.cursospring.domain.enums.TipoCliente;
 import com.fellows.cursospring.dto.ClienteDTO;
 import com.fellows.cursospring.dto.ClienteNewDTO;
 import com.fellows.cursospring.repositories.ClienteRepository;
 import com.fellows.cursospring.repositories.EnderecoRepository;
+import com.fellows.cursospring.security.UserSS;
+import com.fellows.cursospring.services.exception.AuthorizationException;
 import com.fellows.cursospring.services.exception.DataIntegrityException;
 import com.fellows.cursospring.services.exception.DataNotFoundException;
 
@@ -27,7 +30,7 @@ import com.fellows.cursospring.services.exception.DataNotFoundException;
 public class ClienteService {
 
 	@Autowired
-	private ClienteRepository				repo;
+	private ClienteRepository				clienteRepository;
 
 	@Autowired
 	private EnderecoRepository				enderecoRepository;
@@ -35,28 +38,34 @@ public class ClienteService {
 	@Autowired
 	private static BCryptPasswordEncoder	be;
 
-	public Cliente find( Integer id ) throws DataNotFoundException {
-		Optional<Cliente> obj = repo.findById( id );
+	public Cliente find( Integer id ) throws DataNotFoundException, AuthorizationException {
+
+		UserSS user = UserService.authenticated();
+		if ( user == null || !user.hasRole( Perfil.ADMIN ) && !id.equals( user.getId() ) ) {
+			throw new AuthorizationException( "Acesso negado!" );
+		}
+
+		Optional<Cliente> obj = clienteRepository.findById( id );
 		return obj.orElseThrow( () -> new DataNotFoundException(
-				"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName() ) );
+			"Objeto não encontrado! Id: " + id + ", Tipo: " + Cliente.class.getName() ) );
 	}
 
 	public Cliente findByEmail( String email ) {
-		return repo.findByEmail( email );
+		return clienteRepository.findByEmail( email );
 	}
 
 	@Transactional
 	public Cliente insert( Cliente obj ) {
 		obj.setId( null );
-		obj = repo.save( obj );
+		obj = clienteRepository.save( obj );
 		enderecoRepository.saveAll( obj.getEnderecos() );
 		return obj;
 	}
 
-	public Cliente update( Cliente obj, Integer id ) throws DataNotFoundException {
+	public Cliente update( Cliente obj, Integer id ) throws DataNotFoundException, AuthorizationException {
 		Cliente c = find( id );
 		updateData( c, obj );
-		return repo.save( c );
+		return clienteRepository.save( c );
 	}
 
 	private void updateData( Cliente c, Cliente obj ) {
@@ -66,19 +75,19 @@ public class ClienteService {
 
 	public void delete( Integer id ) throws DataIntegrityException {
 		try {
-			repo.deleteById( id );
+			clienteRepository.deleteById( id );
 		} catch ( DataIntegrityViolationException e ) {
 			throw new DataIntegrityException( "Não é possível excluir um cliente com pedidos relacionados" );
 		}
 	}
 
 	public List<Cliente> findAll() {
-		return repo.findAll();
+		return clienteRepository.findAll();
 	}
 
 	public Page<Cliente> paginate( Integer page, Integer size, String orderBy, String direction ) {
 		PageRequest pr = PageRequest.of( page, size, Direction.valueOf( direction ), orderBy );
-		return repo.findAll( pr );
+		return clienteRepository.findAll( pr );
 	}
 
 	public Cliente fromDTO( ClienteDTO objDTO ) {
@@ -87,10 +96,10 @@ public class ClienteService {
 
 	public static Cliente fromDTO( ClienteNewDTO objDTO ) {
 		Cliente		cli	= new Cliente( null, objDTO.getNome(), objDTO.getEmail(), objDTO.getCpfOuCnpj(),
-				TipoCliente.toEnum( objDTO.getTipo() ), be.encode( objDTO.getSenha() ) );
+			TipoCliente.toEnum( objDTO.getTipo() ), be.encode( objDTO.getSenha() ) );
 		Cidade		cid	= new Cidade( objDTO.getCidadeId(), null, null );
 		Endereco	end	= new Endereco( null, objDTO.getLogradouro(), objDTO.getNumero(), objDTO.getComplemento(),
-				objDTO.getBairro(), objDTO.getCep(), cli, cid );
+			objDTO.getBairro(), objDTO.getCep(), cli, cid );
 
 		cli.getEnderecos().add( end );
 		cli.getTelefones().add( objDTO.getTelefone1() );
