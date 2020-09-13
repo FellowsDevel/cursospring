@@ -11,7 +11,7 @@ public interface EmailService<T> {
 	public void sendOrderConfirmationHtmlEmail( T obj );
 
 	public void sendEmail( SimpleMailMessage msg );
-	
+
 	public void sendEmail( MimeMessage msg );
 
 }

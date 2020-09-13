@@ -273,7 +273,7 @@ class ClienteResourceTest {
 		Cliente resp2 = clienteRepo.findByEmail( cli2.getEmail() );
 
 		cli2.setEmail( cli.getEmail() );
-		
+
 		mockMvc.perform( put( "/clientes/" + resp2.getId() )
 				.contentType( MediaType.APPLICATION_JSON )
 				.content( mapper.writeValueAsString( cli2 ) ) )

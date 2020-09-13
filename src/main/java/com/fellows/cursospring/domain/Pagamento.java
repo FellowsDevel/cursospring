@@ -21,7 +21,6 @@ import com.fellows.cursospring.domain.enums.EstadoPagamento;
  */
 @Inheritance( strategy = InheritanceType.JOINED )
 
-
 // Essa anotacao abaixo é para o Jackson deserializar o JSON e instanciar a classe correta
 // A classe que devera ser instanciada tem a anotacao de @JsonTypeName com o nome da classe a ser instanciada
 // pois as classes que sao instanciadas extendem dessa daqui

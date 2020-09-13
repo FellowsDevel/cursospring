@@ -20,11 +20,11 @@ import com.fellows.cursospring.services.exception.DataNotFoundException;
 public class ProdutoService {
 
 	@Autowired
-	private ProdutoRepository repo;
+	private ProdutoRepository	repo;
 
 	@Autowired
-	private CategoriaService categoriaService;
-	
+	private CategoriaService	categoriaService;
+
 	public Produto find( Integer id ) throws DataNotFoundException {
 		Optional<Produto> obj = repo.findById( id );
 		return obj.orElseThrow( () -> new DataNotFoundException(
@@ -56,8 +56,8 @@ public class ProdutoService {
 			Integer size,
 			String orderBy,
 			String direction ) {
-		PageRequest pr = PageRequest.of( page, size, Direction.valueOf( direction ), orderBy );
-		List<Categoria> categorias = categoriaService.findAll( ids );
+		PageRequest		pr			= PageRequest.of( page, size, Direction.valueOf( direction ), orderBy );
+		List<Categoria>	categorias	= categoriaService.findAll( ids );
 		return repo.findDistinctByNomeContainingAndCategoriasIn( nome, categorias, pr );
 
 	}
