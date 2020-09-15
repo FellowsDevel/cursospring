@@ -8,6 +8,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import org.springframework.http.HttpHeaders;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
@@ -56,6 +57,6 @@ public class JWTAuthenticationFilter extends UsernamePasswordAuthenticationFilte
 
 		String	username	= ( (UserSS) authResult.getPrincipal() ).getUsername();
 		String	token		= jwtUtil.generateToken( username );
-		response.addHeader( "Authorization", "Bearer " + token );
+		response.addHeader( HttpHeaders.AUTHORIZATION, "Bearer " + token );
 	}
 }
