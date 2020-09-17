@@ -1,4 +1,4 @@
-package com.fellows.cursospring.resources;
+package com.fellows.cursospring.controller;
 
 import java.net.URI;
 import java.util.List;
@@ -18,67 +18,68 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
-import com.fellows.cursospring.domain.Categoria;
-import com.fellows.cursospring.dto.CategoriaDTO;
-import com.fellows.cursospring.services.CategoriaService;
+import com.fellows.cursospring.domain.Cliente;
+import com.fellows.cursospring.dto.ClienteDTO;
+import com.fellows.cursospring.dto.ClienteNewDTO;
+import com.fellows.cursospring.services.ClienteService;
+import com.fellows.cursospring.services.exception.AuthorizationException;
 import com.fellows.cursospring.services.exception.DataIntegrityException;
 import com.fellows.cursospring.services.exception.DataNotFoundException;
 
 @RestController
-@RequestMapping( value = "/categorias" )
-public class CategoriaResource {
+@RequestMapping( value = "/clientes" )
+public class ClienteController {
 
 	@Autowired
-	private CategoriaService service;
+	private ClienteService service;
 
 	@RequestMapping( value = "/{id}", method = RequestMethod.GET )
-	public ResponseEntity<Categoria> find( @PathVariable Integer id ) throws DataNotFoundException {
-		Categoria obj = service.find( id );
+	public ResponseEntity<Cliente> find( @PathVariable Integer id ) throws DataNotFoundException, AuthorizationException {
+		Cliente obj = service.find( id );
 		return ResponseEntity.ok().body( obj );
 	}
 
-	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping( method = RequestMethod.POST )
-	public ResponseEntity<Void> insert( @Valid @RequestBody CategoriaDTO objDTO ) {
-		Categoria	obj	= service.insert( CategoriaService.fromDTO( objDTO ) );
-		URI			uri	= ServletUriComponentsBuilder.fromCurrentRequest().path( "/{id}" ).buildAndExpand( obj.getId() )
+	public ResponseEntity<Void> insert( @Valid @RequestBody ClienteNewDTO objDTO ) {
+		Cliente	obj	= service.insert( ClienteService.fromDTO( objDTO ) );
+		URI		uri	= ServletUriComponentsBuilder.fromCurrentRequest().path( "/{id}" ).buildAndExpand( obj.getId() )
 				.toUri();
 		return ResponseEntity.created( uri ).build();
 	}
-	
-	@PreAuthorize("hasAnyRole('ADMIN')")
+
 	@RequestMapping( value = "/{id}", method = RequestMethod.PUT )
-	public ResponseEntity<Void> update( @Valid @RequestBody CategoriaDTO objDTO, @PathVariable Integer id )
-			throws DataNotFoundException {
+	public ResponseEntity<Void> update( @Valid @RequestBody ClienteDTO objDTO, @PathVariable Integer id )
+			throws DataNotFoundException, AuthorizationException {
 		objDTO.setId( id );
-		service.update( CategoriaService.fromDTO( objDTO ), id );
+		service.update( service.fromDTO( objDTO ), id );
 		return ResponseEntity.noContent().build();
 	}
 
 	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping( value = "/{id}", method = RequestMethod.DELETE )
-	public void delete( @PathVariable Integer id ) throws DataIntegrityException {
+	public ResponseEntity<Void> delete( @PathVariable Integer id ) throws DataIntegrityException {
 		service.delete( id );
+		return ResponseEntity.noContent().build();
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping( method = RequestMethod.GET )
-	public ResponseEntity<List<CategoriaDTO>> findAll() {
-		List<Categoria>		list	= service.findAll();
-		List<CategoriaDTO>	listDTO	= list.stream().map( obj -> new CategoriaDTO( obj ) )
-				.collect( Collectors.toList() );
+	public ResponseEntity<List<ClienteDTO>> findAll() {
+		List<Cliente>		list	= service.findAll();
+		List<ClienteDTO>	listDTO	= list.stream().map( obj -> new ClienteDTO( obj ) ).collect( Collectors.toList() );
 		return ResponseEntity.ok().body( listDTO );
 	}
 
+	@PreAuthorize("hasAnyRole('ADMIN')")
 	@RequestMapping( value = "/page", method = RequestMethod.GET )
-	public ResponseEntity<Page<CategoriaDTO>> paginate(
+	public ResponseEntity<Page<ClienteDTO>> paginate(
 			@RequestParam( value = "page", defaultValue = "0" ) Integer page,
 			@RequestParam( value = "size", defaultValue = "24" ) Integer size,
 			@RequestParam( value = "orderBy", defaultValue = "nome" ) String orderBy,
 			@RequestParam( value = "direction", defaultValue = "ASC" ) String direction ) {
 
-		Page<Categoria>		list	= service.paginate( page, size, orderBy, direction );
-		Page<CategoriaDTO>	listDTO	= list.map( obj -> new CategoriaDTO( obj ) );
+		Page<Cliente>		list	= service.paginate( page, size, orderBy, direction );
+		Page<ClienteDTO>	listDTO	= list.map( obj -> new ClienteDTO( obj ) );
 		return ResponseEntity.ok().body( listDTO );
 	}
-
 }

@@ -1,4 +1,4 @@
-package com.fellows.cursospring.resources;
+package com.fellows.cursospring.controller;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
@@ -21,7 +21,7 @@ import com.fellows.cursospring.services.exception.DataNotFoundException;
 
 @RestController
 @RequestMapping( value = "/auth" )
-public class AuthResource {
+public class AuthController {
 
 	@Autowired
 	private JWTUtil		jwtUtil;

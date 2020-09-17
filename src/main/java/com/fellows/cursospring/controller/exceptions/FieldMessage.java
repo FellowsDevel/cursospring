@@ -1,4 +1,4 @@
-package com.fellows.cursospring.resources.exceptions;
+package com.fellows.cursospring.controller.exceptions;
 
 import java.io.Serializable;
 

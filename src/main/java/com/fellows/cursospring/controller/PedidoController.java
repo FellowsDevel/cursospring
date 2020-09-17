@@ -1,4 +1,4 @@
-package com.fellows.cursospring.resources;
+package com.fellows.cursospring.controller;
 
 import java.net.URI;
 
@@ -21,7 +21,7 @@ import com.fellows.cursospring.services.exception.DataNotFoundException;
 
 @RestController
 @RequestMapping( value = "/pedidos" )
-public class PedidoResource {
+public class PedidoController {
 
 	@Autowired
 	private PedidoService service;

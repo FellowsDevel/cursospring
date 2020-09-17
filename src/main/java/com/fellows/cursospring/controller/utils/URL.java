@@ -1,4 +1,4 @@
-package com.fellows.cursospring.resources.utils;
+package com.fellows.cursospring.controller.utils;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;

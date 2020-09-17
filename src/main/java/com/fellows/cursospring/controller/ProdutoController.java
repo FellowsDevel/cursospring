@@ -1,4 +1,4 @@
-package com.fellows.cursospring.resources;
+package com.fellows.cursospring.controller;
 
 import java.util.List;
 
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.fellows.cursospring.controller.utils.URL;
 import com.fellows.cursospring.domain.Produto;
 import com.fellows.cursospring.dto.ProdutoDTO;
-import com.fellows.cursospring.resources.utils.URL;
 import com.fellows.cursospring.services.ProdutoService;
 import com.fellows.cursospring.services.exception.DataNotFoundException;
 
 @RestController
 @RequestMapping( value = "/produtos" )
-public class ProdutoResource {
+public class ProdutoController {
 
 	@Autowired
 	private ProdutoService service;
