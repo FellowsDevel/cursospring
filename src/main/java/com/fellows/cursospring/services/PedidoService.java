@@ -46,7 +46,7 @@ public class PedidoService {
 	private ClienteService			clienteService;
 
 	@Autowired
-	private EmailService<Pedido>	emailService;
+	private EmailService			emailService;
 
 	public Pedido find( Integer id ) throws DataNotFoundException {
 		Optional<Pedido> obj = repo.findById( id );
@@ -98,13 +98,13 @@ public class PedidoService {
 
 	public Page<Pedido> findPage( Integer page, Integer linesPerPage, String orderBy, String direction )
 		throws AuthorizationException, DataNotFoundException {
-		
+
 		UserSS user = UserService.authenticated();
-		
+
 		if ( user == null ) {
 			throw new AuthorizationException();
 		}
-		
+
 		PageRequest	pageRequest	= PageRequest.of( page, linesPerPage, Direction.valueOf( direction ), orderBy );
 		Cliente		cliente		= clienteService.find( user.getId() );
 		return repo.findByCliente( cliente, pageRequest );

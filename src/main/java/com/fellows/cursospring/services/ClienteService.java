@@ -63,7 +63,7 @@ public class ClienteService {
 	}
 
 	public Cliente update( Cliente obj, Integer id ) throws DataNotFoundException, AuthorizationException {
-		Cliente c = find( id );
+		Cliente c = clienteRepository.findById( id ).get();
 		updateData( c, obj );
 		return clienteRepository.save( c );
 	}
@@ -71,6 +71,7 @@ public class ClienteService {
 	private void updateData( Cliente c, Cliente obj ) {
 		c.setNome( obj.getNome() );
 		c.setEmail( obj.getEmail() );
+		c.setSenha( obj.getSenha() );
 	}
 
 	public void delete( Integer id ) throws DataIntegrityException {
@@ -111,4 +112,5 @@ public class ClienteService {
 		}
 		return cli;
 	}
+
 }

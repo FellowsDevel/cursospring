@@ -4,14 +4,19 @@ import javax.mail.internet.MimeMessage;
 
 import org.springframework.mail.SimpleMailMessage;
 
-public interface EmailService<T> {
+import com.fellows.cursospring.domain.Cliente;
+import com.fellows.cursospring.domain.Pedido;
 
-	public void sendOrderConfirmationEmail( T obj );
+public interface EmailService {
 
-	public void sendOrderConfirmationHtmlEmail( T obj );
+	public void sendOrderConfirmationEmail( Pedido obj );
+
+	public void sendOrderConfirmationHtmlEmail( Pedido obj );
 
 	public void sendEmail( SimpleMailMessage msg );
 
 	public void sendEmail( MimeMessage msg );
+
+	public void sendNewPassword( Cliente cli, String newPass );
 
 }
